@@ -21,15 +21,6 @@ class Series(BaseModel):
     """A cricket series."""
 
     if TYPE_CHECKING:
-        id: int
-        group_id: int
-        name: str
-        alt_name: str
-        short_name: str
-        short_alt_name: str
-        abbreviation: str
-        slug: str
-        is_tournament: bool
         season_url: str
         seasons_url: str
         teams_url: str
@@ -45,15 +36,6 @@ class Series(BaseModel):
         self.json_url = f"http://core.espnuk.org/v2/sports/cricket/leagues/{self.id}/"
         self.json = j = self.get_json(self.json_url)
 
-        self.group_id = j['groupId']
-        self.name = j['name']
-        self.alt_name = j['alternateName']
-        self.short_name = j['shortName']
-        self.short_alt_name = j['shortAlternateName']
-        self.abbreviation = j['abbreviation']
-        self.slug = j['slug']
-        self.is_tournament = j['isTournament']
-
         self.season_url = j['season']["$ref"]
         self.seasons_url = j['seasons']["$ref"]
         self.teams_url = j['teams']["$ref"]
@@ -64,6 +46,46 @@ class Series(BaseModel):
 
         self._season = None
         self._seasons = None
+
+    @property
+    def group_id(self) -> int:
+        """Returns the group ID of the series."""
+        return self.json['groupId']
+
+    @property
+    def name(self) -> str:
+        """Returns the name of the series."""
+        return self.json['name']
+
+    @property
+    def alternate_name(self) -> str:
+        """Returns the alternate name of the series."""
+        return self.json['alternateName']
+
+    @property
+    def short_name(self) -> str:
+        """Returns the short name of the series."""
+        return self.json['shortName']
+
+    @property
+    def short_alternate_name(self) -> str:
+        """Returns the short alternate name of the series."""
+        return self.json['shortAlternateName']
+
+    @property
+    def abbreviation(self) -> str:
+        """Returns the abbreviation of the series."""
+        return self.json['abbreviation']
+
+    @property
+    def slug(self) -> str:
+        """Returns the slug of the series."""
+        return self.json['slug']
+
+    @property
+    def is_tournament(self) -> bool:
+        """Returns whether the series is a tournament."""
+        return self.json['isTournament']
 
     @property
     def season(self) -> Season[Series, str]:

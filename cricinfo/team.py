@@ -41,22 +41,58 @@ class Team[Q: str | int | None](BaseModel):
             self.json_url = team_url
         self.json = j = self.get_json(self.json_url)
 
-        self.id = j['id']
-        self.name = j['name']
-        self.nickname = j['nickname']
-        self.abbreviation = j['abbreviation']
-        self.display_name = j['displayName']
-        self.short_display_name = j['shortDisplayName']
-        self.is_national = j['isNational']
-        self.is_active = j['isActive']
-        self.country_code = j['countryCode']
-        self.slug = j['slug']
+        self.id = int(j['id'])
 
         self.athletes_url = j['athletes']["$ref"]
         self._athletes = []
 
     def __repr__(self) -> str:
         return f"<Team {self.name}>"
+
+    @property
+    def name(self) -> str:
+        """Returns the name of the team."""
+        return self.json['name']
+
+    @property
+    def nickname(self) -> str:
+        """Returns the nickname of the team."""
+        return self.json['nickname']
+
+    @property
+    def abbreviation(self) -> str:
+        """Returns the abbreviation of the team."""
+        return self.json['abbreviation']
+
+    @property
+    def display_name(self) -> str:
+        """Returns the display name of the team."""
+        return self.json['displayName']
+
+    @property
+    def short_display_name(self) -> str:
+        """Returns the short display name of the team."""
+        return self.json['shortDisplayName']
+
+    @property
+    def is_national(self) -> bool:
+        """Returns whether the team is national."""
+        return self.json['isNational']
+
+    @property
+    def is_active(self) -> bool:
+        """Returns whether the team is active."""
+        return self.json['isActive']
+
+    @property
+    def country_code(self) -> str:
+        """Returns the country code of the team."""
+        return self.json['countryCode']
+
+    @property
+    def slug(self) -> str:
+        """Returns the slug of the team."""
+        return self.json['slug']
 
     @property
     def athletes(self) -> List[Athlete[str]]:
@@ -66,3 +102,21 @@ class Team[Q: str | int | None](BaseModel):
             for a in j['items']:
                 self._athletes.append(Athlete(player_url=a['$ref']))
         return self._athletes
+
+    def get_athlete(
+        self,
+        name: str,
+    ) -> Athlete[str] | None:
+        """Returns the athlete with the given name."""
+        name = name.lower().strip()
+        for a in self.athletes:
+            if name in (
+                a.name.lower(), a.first_name.lower(),
+                a.middle_name.lower(), a.last_name.lower(),
+                a.short_name.lower(), a.full_name.lower(),
+                a.display_name.lower(), a.batting_name.lower(),
+                a.fielding_name.lower(),
+                ):
+                return a
+        return None
+    

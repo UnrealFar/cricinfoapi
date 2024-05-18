@@ -40,6 +40,9 @@ class BaseModel:
         cls.model_cache[obj.id] = obj
         return obj
 
+    def __repr__(self) -> str:
+        return f'<{self.__class__.__name__} {self.name}>'
+
     @classmethod
     def get(cls, id: int) -> BaseModel:
         if id in cls.model_cache:

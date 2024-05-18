@@ -95,4 +95,19 @@ class Season[S: Series, U: str](BaseModel):
             self._teams = [Team(team_url=tm["$ref"]) for tm in tms]
         return self._teams
 
+    def get_team(
+        self,
+        name: str,
+    ):
+        """Returns the team with the given name."""
+        name = name.lower().strip()
+        for t in self.teams:
+            if name in (
+                t.name.lower(), t.nickname.lower(),
+                t.abbreviation.lower(), t.display_name.lower(),
+                t.short_display_name.lower(),
+                ):
+                return t
+        return None
+
 
