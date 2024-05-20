@@ -29,8 +29,8 @@ Indian Premier League
 For getting player info, get the player ID from the player's Cricinfo URL.
 
 ```py
->>> from cricinfo import Player
->>> kohli = Player(id=253802)
+>>> from cricinfo import Athlete
+>>> kohli = Athlete(id=253802)
 >>> kohli.name
 'Virat Kohli'
 ```
