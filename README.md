@@ -3,6 +3,8 @@
 
 A useful Python wrapper to scrape the ESPN Cricinfo JSON API.
 
+
+
 ## Installation
 ```bash
 # Development Version
