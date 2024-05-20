@@ -9,7 +9,7 @@ A useful Python wrapper to scrape the ESPN Cricinfo JSON API.
 ```bash
 # Development Version
 
-pip install git+https://github.com/UnrealFar/cricinfoapi
+pip install git+https://github.com/UnrealFar/pycricinfo
 ```
 
 # Example Usage
